@@ -112,6 +112,10 @@ e confira com `ls .claude/commands`. Como a projeção no Windows é **cópia**,
 
 ## Deploy (GitHub → Hostinger, aplicação Node)
 
+- HOSTINGER COM UM DESCONTÃO!
+- Cupom: CELKE
+- https://celke.com.br/page/hostinger
+
 ```
 git push (GitHub)  →  auto-deploy sincroniza o repositório
                    →  npm install --include=dev   ← devDependencies buildam (ng, typescript…)
@@ -145,3 +149,12 @@ git push (GitHub)  →  auto-deploy sincroniza o repositório
 - [ ] 1366×768 sem rolagem horizontal · deep-link e refresh funcionam
 - [ ] Teste para a lógica de domínio nova (função pura)
 - [ ] `npm run check` verde e `/revisar-dod` limpo
+
+## Autor
+
+Desenvolvido por [Cesar Szpak](https://celke.com.br) — [Celke
+Cursos](https://github.com/celkecursos).
+
+## Licença
+
+MIT — veja o arquivo [LICENSE](LICENSE.txt) para detalhes.
