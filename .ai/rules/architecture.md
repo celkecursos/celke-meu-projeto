@@ -147,8 +147,23 @@ Gate = `npm run check` (`lint` + `test:ci` + `build`). Teste faz parte da entreg
 
 - **`server.js`** (raiz) é **infra de entrega** — Express servindo `dist/` em
   produção. Não é código de aplicação: **não o edite em task de feature**.
-- `core/` guarda singletons (config, rotas, layout, `data/consulta.ts`);
-  `shared/components/` guarda o reuso dumb ENTRE módulos.
+- `core/` guarda singletons (config, rotas, layout, `data/consulta.ts`,
+  `auth/` — sessão mocada); `shared/components/` guarda o reuso dumb ENTRE módulos.
+- **`core/auth/`** (`auth.facade.ts`, `auth.guard.ts`, `auth.models.ts`) é a sessão
+  MOCADA do app — login sem backend real, persistida em `localStorage`. Protege
+  `EstruturaLayout` inteiro via `canActivate: [authGuard]` em `app.routes.ts`;
+  `/login` é a única rota pública. **`src/app/pages/login/`** (fora de
+  `modules/` — login não é um domínio de negócio) é a única página que não segue
+  a árvore canônica de módulo.
+
+> **Armadilha de compilador**: uma função/método que devolve uma **união
+> discriminada inline** (`{ sucesso: true } | { sucesso: false; recusa: X }`) pode
+> falhar a estreitar no `@angular/build` (esbuild) mesmo quando o mesmo código
+> passa limpo no `tsc` puro — o sintoma é um `TS2339` no ramo que deveria estar
+> estreitado. `AuthFacade.entrar()` bateu nisso; o contorno foi trocar a união por
+> uma **interface plana** (`{ sucesso: boolean; recusa: X | null }`). Se um
+> `TS2339` aparecer numa união discriminada que parece correta, teste primeiro com
+> `tsc --noEmit` isolado antes de assumir erro de lógica — pode ser o compilador.
 
 ## Regra que blinda a composição
 

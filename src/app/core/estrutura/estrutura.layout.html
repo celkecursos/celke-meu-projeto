@@ -44,6 +44,20 @@
         <span class="sr-only">Alternar tema claro e escuro</span>
         <span aria-hidden="true">{{ escuro() ? '☀' : '☾' }}</span>
       </button>
+
+      @if (sessao(); as s) {
+        <span class="hidden text-sm text-slate-500 sm:inline dark:text-slate-400">
+          {{ s.nomeCompleto }}
+        </span>
+
+        <button
+          type="button"
+          class="controle cursor-pointer rounded-md border border-slate-300 px-3 py-1.5 text-sm font-medium text-slate-700 hover:bg-slate-50 dark:border-slate-600 dark:text-slate-200 dark:hover:bg-slate-800"
+          (click)="sair()"
+        >
+          Sair
+        </button>
+      }
     </div>
 
     <!-- Mobile: a mesma navegação, empilhada sob a barra quando o menu está aberto. -->

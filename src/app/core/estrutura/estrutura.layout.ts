@@ -1,5 +1,7 @@
-import { Component, signal } from '@angular/core';
-import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
+import { Component, inject, signal } from '@angular/core';
+import { Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
+
+import { AuthFacade } from '../auth/auth.facade';
 
 /** Item da navegação superior. A task `*-fiacao` de cada módulo acrescenta o seu. */
 interface IItemNav {
@@ -20,11 +22,17 @@ interface IItemNav {
   templateUrl: './estrutura.layout.html',
 })
 export class EstruturaLayout {
+  #auth = inject(AuthFacade);
+  #router = inject(Router);
+
   /**
    * Itens da navegação. VAZIO por enquanto — o primeiro módulo nasce do pipeline SDD
    * e a task de fiação dele acrescenta a entrada aqui.
    */
   protected readonly itens = signal<IItemNav[]>([{ rotulo: 'Usuários', rota: '/usuarios' }]);
+
+  /** Sessão vigente — exibida como "olá, fulano" na barra. */
+  protected readonly sessao = this.#auth.sessao;
 
   /** Menu aberto no mobile (no desktop a navegação fica sempre visível na barra). */
   protected readonly menuAberto = signal(false);
@@ -44,5 +52,10 @@ export class EstruturaLayout {
   protected alternarTema(): void {
     this.escuro.update((atual) => !atual);
     document.documentElement.classList.toggle('dark', this.escuro());
+  }
+
+  protected sair(): void {
+    this.#auth.sair();
+    this.#router.navigateByUrl('/login');
   }
 }
