@@ -1,0 +1,155 @@
+<div class="flex flex-col gap-6">
+  <!-- Cabeçalho: título, contagem e a ação principal da tela. -->
+  <div class="flex flex-wrap items-end justify-between gap-3">
+    <div class="flex flex-col gap-1">
+      <h1 class="text-2xl font-semibold tracking-tight text-slate-900 dark:text-slate-100">Usuários</h1>
+      <p class="text-sm text-slate-500 dark:text-slate-400">
+        @if (listagem().carregando) {
+          Carregando…
+        } @else if (listagem().total === 1) {
+          1 usuário cadastrado
+        } @else {
+          {{ listagem().total }} usuários
+          @if (!semCriterioAtivo()) {
+            encontrados
+          } @else {
+            cadastrados
+          }
+        }
+      </p>
+    </div>
+
+    <a
+      routerLink="/usuarios/novo"
+      class="controle inline-flex items-center gap-2 rounded-md bg-marca-600 px-4 py-1.5 text-sm font-medium text-white shadow-sm hover:bg-marca-700 dark:bg-marca-500 dark:hover:bg-marca-600"
+    >
+      <svg class="size-4" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+        <path d="M10 4a.75.75 0 0 1 .75.75v4.5h4.5a.75.75 0 0 1 0 1.5h-4.5v4.5a.75.75 0 0 1-1.5 0v-4.5h-4.5a.75.75 0 0 1 0-1.5h4.5v-4.5A.75.75 0 0 1 10 4Z" />
+      </svg>
+      Novo usuário
+    </a>
+  </div>
+
+  @if (mensagemSucesso(); as mensagem) {
+    <div
+      role="status"
+      class="flex items-center justify-between gap-3 rounded-md border border-green-300 bg-green-50 px-4 py-3 text-green-800 dark:border-green-700 dark:bg-green-950 dark:text-green-300"
+    >
+      <p class="text-sm">{{ mensagem }}</p>
+      <button
+        type="button"
+        (click)="fecharMensagemSucesso()"
+        class="controle shrink-0 cursor-pointer rounded-md px-3 text-sm font-medium hover:bg-green-100 dark:hover:bg-green-900"
+        aria-label="Dispensar mensagem"
+      >
+        Fechar
+      </button>
+    </div>
+  }
+
+  @if (erroAcao(); as erro) {
+    <div
+      role="alert"
+      class="flex items-center justify-between gap-3 rounded-md border border-perigo-600 bg-perigo-100 px-4 py-3 text-perigo-900 dark:border-perigo-500 dark:bg-perigo-900 dark:text-perigo-100"
+    >
+      <p class="text-sm">{{ erro }}</p>
+      <button
+        type="button"
+        (click)="fecharErroAcao()"
+        class="controle shrink-0 cursor-pointer rounded-md px-3 text-sm font-medium hover:bg-perigo-100 dark:hover:bg-perigo-900"
+        aria-label="Dispensar mensagem de erro"
+      >
+        Fechar
+      </button>
+    </div>
+  }
+
+  <!--
+    Filtros e resultado moram no MESMO cartão: são uma coisa só para o operador
+    (critério → resultado), e a moldura única evita a tela virar uma pilha de
+    caixas soltas.
+  -->
+  <section class="rounded-lg border border-slate-200 bg-white dark:border-slate-700 dark:bg-slate-900">
+    <div class="border-b border-slate-200 p-4 dark:border-slate-700">
+      <app-usuario-filtros
+        [busca]="buscaAtual()"
+        [situacao]="situacaoAtual()"
+        (buscar)="buscar($event)"
+        (filtrarSituacao)="filtrarSituacao($event)"
+        (limpar)="limpar()"
+      />
+    </div>
+
+    @if (listagem().total === 0 && !listagem().carregando && !listagem().erro) {
+      <!-- Vazio: o texto e a saída mudam conforme haja critério ativo ou não. -->
+      <div class="flex flex-col items-center gap-3 px-6 py-14 text-center">
+        <svg
+          class="size-10 text-slate-300 dark:text-slate-600"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.5"
+          aria-hidden="true"
+        >
+          <path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 0 0 2.625.372 9.337 9.337 0 0 0 4.121-.952 4.125 4.125 0 0 0-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 0 1 8.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0 1 11.964-3.07M12 6.375a3.375 3.375 0 1 1-6.75 0 3.375 3.375 0 0 1 6.75 0Zm8.25 2.25a2.625 2.625 0 1 1-5.25 0 2.625 2.625 0 0 1 5.25 0Z" />
+        </svg>
+
+        @if (semCriterioAtivo()) {
+          <div class="flex flex-col gap-1">
+            <p class="font-medium text-slate-700 dark:text-slate-200">Nenhum usuário cadastrado ainda</p>
+            <p class="text-sm text-slate-500 dark:text-slate-400">Comece cadastrando o primeiro.</p>
+          </div>
+          <a
+            routerLink="/usuarios/novo"
+            class="controle inline-flex items-center rounded-md bg-marca-600 px-4 py-1.5 text-sm font-medium text-white hover:bg-marca-700 dark:bg-marca-500 dark:hover:bg-marca-600"
+          >
+            Cadastrar primeiro usuário
+          </a>
+        } @else {
+          <div class="flex flex-col gap-1">
+            <p class="font-medium text-slate-700 dark:text-slate-200">Nenhum usuário encontrado</p>
+            <p class="text-sm text-slate-500 dark:text-slate-400">
+              Nenhum registro atende aos critérios atuais.
+            </p>
+          </div>
+          <button
+            type="button"
+            (click)="limpar()"
+            class="controle inline-flex cursor-pointer items-center rounded-md border border-slate-300 px-4 py-1.5 text-sm font-medium text-slate-700 hover:bg-slate-50 dark:border-slate-600 dark:text-slate-200 dark:hover:bg-slate-800"
+          >
+            Limpar critérios
+          </button>
+        }
+      </div>
+    } @else {
+      <!--
+        Uma ÚNICA instância da tabela para carregando/erro/com itens — ela já
+        deriva os três estados da `listagem`. Repetir o componente por estado
+        (como antes) multiplica a manutenção de cada `output` novo.
+      -->
+      <app-usuario-tabela
+        [listagem]="listagem()"
+        (selecionar)="selecionar($event)"
+        (visualizar)="visualizar($event)"
+        (editar)="editar($event)"
+        (alternarSituacao)="alternarSituacao($event)"
+      />
+
+      @if (listagem().erro) {
+        <div class="border-t border-slate-200 p-4 dark:border-slate-700">
+          <button
+            type="button"
+            (click)="recarregar()"
+            class="controle inline-flex w-fit cursor-pointer items-center rounded-md border border-slate-300 px-4 py-1.5 text-sm font-medium text-slate-700 hover:bg-slate-50 dark:border-slate-600 dark:text-slate-200 dark:hover:bg-slate-800"
+          >
+            Tentar novamente
+          </button>
+        </div>
+      } @else {
+        <div class="border-t border-slate-200 px-4 dark:border-slate-700">
+          <app-paginacao [listagem]="listagem()" (pagina)="paginar($event)" />
+        </div>
+      }
+    }
+  </section>
+</div>

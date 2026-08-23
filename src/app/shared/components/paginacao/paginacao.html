@@ -1,0 +1,36 @@
+<nav
+  class="flex flex-wrap items-center justify-between gap-3 py-3"
+  aria-label="Paginação da listagem"
+>
+  <p class="text-sm text-slate-600 dark:text-slate-400" aria-live="polite">
+    @if (listagem().total === 0) {
+      Nenhum registro
+    } @else {
+      {{ primeiroItem() }}–{{ ultimoItem() }} de {{ listagem().total }}
+    }
+  </p>
+
+  <div class="flex items-center gap-2">
+    <button
+      type="button"
+      class="controle cursor-pointer rounded-md border border-slate-300 px-4 py-1.5 text-sm font-medium text-slate-700 hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-50 dark:border-slate-600 dark:text-slate-200 dark:hover:bg-slate-800"
+      [disabled]="!temAnterior()"
+      (click)="irPara(atual() - 1)"
+    >
+      Anterior
+    </button>
+
+    <span class="text-sm text-slate-600 dark:text-slate-400">
+      Página {{ atual() }} de {{ totalPaginas() }}
+    </span>
+
+    <button
+      type="button"
+      class="controle cursor-pointer rounded-md border border-slate-300 px-4 py-1.5 text-sm font-medium text-slate-700 hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-50 dark:border-slate-600 dark:text-slate-200 dark:hover:bg-slate-800"
+      [disabled]="!temProxima()"
+      (click)="irPara(atual() + 1)"
+    >
+      Próxima
+    </button>
+  </div>
+</nav>

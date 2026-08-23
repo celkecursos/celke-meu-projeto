@@ -1,0 +1,84 @@
+<div class="w-full overflow-x-auto">
+  <table class="w-full border-collapse text-sm">
+    <thead class="border-b border-slate-200 bg-slate-50 dark:border-slate-700 dark:bg-slate-800">
+      <tr>
+        @for (coluna of colunas(); track coluna.campo) {
+          <th
+            scope="col"
+            class="px-4 py-3 font-semibold text-slate-700 dark:text-slate-200"
+            [class]="classeAlinhamento(coluna)"
+          >
+            {{ coluna.rotulo }}
+          </th>
+        }
+        @if (acoes()) {
+          <th scope="col" class="px-4 py-3 text-right font-semibold text-slate-700 dark:text-slate-200">
+            {{ rotuloAcoes() }}
+          </th>
+        }
+      </tr>
+    </thead>
+
+    <tbody>
+      @if (carregando()) {
+        @for (linha of linhasEsqueleto(); track linha) {
+          <tr class="border-t border-slate-200 dark:border-slate-700">
+            @for (coluna of colunas(); track coluna.campo) {
+              <td class="px-4 py-3">
+                <span class="block h-4 w-full animate-pulse rounded bg-slate-200 dark:bg-slate-700"></span>
+              </td>
+            }
+            @if (acoes()) {
+              <td class="px-4 py-3">
+                <span class="block h-4 w-full animate-pulse rounded bg-slate-200 dark:bg-slate-700"></span>
+              </td>
+            }
+          </tr>
+        }
+        <tr class="sr-only">
+          <td [attr.colspan]="totalColunas()" aria-live="polite">Carregando registros…</td>
+        </tr>
+      } @else if (erro()) {
+        <tr class="border-t border-slate-200 dark:border-slate-700">
+          <td [attr.colspan]="totalColunas()" class="px-4 py-10 text-center">
+            <p class="font-medium text-perigo-600 dark:text-perigo-500" role="alert">{{ erro() }}</p>
+            <p class="mt-1 text-slate-500 dark:text-slate-400">
+              Não foi possível carregar os registros.
+            </p>
+          </td>
+        </tr>
+      } @else if (vazio()) {
+        <tr class="border-t border-slate-200 dark:border-slate-700">
+          <td [attr.colspan]="totalColunas()" class="px-4 py-10 text-center text-slate-500 dark:text-slate-400">
+            Nenhum registro encontrado.
+          </td>
+        </tr>
+      } @else {
+        @for (item of listagem().itens; track $index) {
+          <tr
+            tabindex="0"
+            class="cursor-pointer border-t border-slate-200 hover:bg-slate-50 dark:border-slate-700 dark:hover:bg-slate-800"
+            (click)="selecionar.emit(item)"
+            (keydown.enter)="selecionar.emit(item)"
+            (keydown.space)="selecionar.emit(item)"
+          >
+            @for (coluna of colunas(); track coluna.campo) {
+              <td class="px-4 py-3 text-slate-700 dark:text-slate-200" [class]="classeAlinhamento(coluna)">
+                {{ valor(item, coluna) }}
+              </td>
+            }
+            @if (acoes()) {
+              <!--
+                `stopPropagation` é essencial: a LINHA inteira emite `(selecionar)`, e
+                sem isto todo clique numa ação dispararia também a navegação da linha.
+              -->
+              <td class="px-4 py-3 text-right" (click)="$event.stopPropagation()" (keydown)="$event.stopPropagation()">
+                <ng-container [ngTemplateOutlet]="acoes()!" [ngTemplateOutletContext]="{ $implicit: item }" />
+              </td>
+            }
+          </tr>
+        }
+      }
+    </tbody>
+  </table>
+</div>

@@ -1,0 +1,66 @@
+@import "tailwindcss";
+
+/* Escurecimento por classe: o layout alterna `dark` no <html>, em vez de depender
+   só da preferência do sistema. Toda superfície declara o par claro/escuro. */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* Tokens do projeto — a rule "token, não valor" manda: cor/medida nasce AQUI ou da
+   escala do Tailwind; nunca de valor arbitrário no template nem de hex em `.css`. */
+@theme {
+  /* Marca */
+  --color-marca-50: oklch(0.97 0.02 250);
+  --color-marca-100: oklch(0.93 0.04 250);
+  --color-marca-200: oklch(0.87 0.07 250);
+  --color-marca-300: oklch(0.78 0.11 250);
+  --color-marca-400: oklch(0.68 0.15 250);
+  --color-marca-500: oklch(0.58 0.18 250);
+  --color-marca-600: oklch(0.50 0.18 250);
+  --color-marca-700: oklch(0.42 0.15 250);
+  --color-marca-800: oklch(0.35 0.12 250);
+  --color-marca-900: oklch(0.28 0.09 250);
+
+  /* Semânticos de estado — usados por tabela/campo para vazio, erro e foco. */
+  --color-perigo-500: oklch(0.58 0.20 25);
+  --color-perigo-600: oklch(0.50 0.20 25);
+  --color-perigo-100: oklch(0.93 0.05 25);
+  --color-perigo-900: oklch(0.28 0.10 25);
+
+  /* Atenção (âmbar) — ação que altera dado existente, como editar.
+     Usado no botão de contorno: a BORDA leva o amarelo-ouro vivo (-400), mas o
+     TEXTO precisa do tom escuro (-700). Sobre fundo branco, o -400 como texto
+     dá só 1.89:1 — reprova os 4.5:1 do DoD; o -700 dá 4.88:1. No tema escuro a
+     relação se inverte e o -400 sobre `slate-800` fica em 6.96:1. */
+  --color-atencao-100: oklch(0.96 0.04 85);
+  --color-atencao-400: oklch(0.80 0.16 85);
+  --color-atencao-700: oklch(0.55 0.14 85);
+  --color-atencao-900: oklch(0.32 0.09 85);
+}
+
+/* Foco visível em toda ação — requisito de DoD, não enfeite. */
+@layer base {
+  :focus-visible {
+    outline: 2px solid var(--color-marca-500);
+    outline-offset: 2px;
+  }
+}
+
+/**
+ * `.controle` — a altura padrão de campo e botão.
+ *
+ * O DoD exige alvo de toque >= 44px, mas 44px em tela de mouse deixa formulário e
+ * barra de ações desnecessariamente altos. A saída é condicionar ao APONTADOR:
+ * onde o ponteiro é grosso (dedo), 44px; onde é fino (mouse/trackpad), 36px.
+ * Assim o requisito de acessibilidade continua valendo exatamente onde ele existe
+ * para valer.
+ */
+@layer components {
+  .controle {
+    min-height: 2.75rem; /* 44px — toque */
+  }
+
+  @media (pointer: fine) {
+    .controle {
+      min-height: 2.25rem; /* 36px — mouse/trackpad */
+    }
+  }
+}

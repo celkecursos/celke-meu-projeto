@@ -1,0 +1,118 @@
+@if (erroCarregamento()) {
+  <div class="flex flex-col items-center gap-3 rounded-lg border border-slate-200 bg-white px-6 py-14 text-center dark:border-slate-700 dark:bg-slate-900">
+    <svg class="size-10 text-slate-300 dark:text-slate-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 3.75h.008v.008H12v-.008Z" />
+    </svg>
+    <p class="font-medium text-slate-700 dark:text-slate-200" role="alert">Usuário não encontrado</p>
+    <a
+      routerLink="/usuarios"
+      class="controle inline-flex items-center rounded-md border border-slate-300 px-4 py-1.5 text-sm font-medium text-slate-700 hover:bg-slate-50 dark:border-slate-600 dark:text-slate-200 dark:hover:bg-slate-800"
+    >
+      Voltar para usuários
+    </a>
+  </div>
+} @else if (carregando()) {
+  <!-- Esqueleto com a silhueta da tela: mesma técnica do formulário, evita salto. -->
+  <div aria-live="polite">
+    <span class="sr-only">Carregando usuário…</span>
+    <div class="rounded-lg border border-slate-200 bg-white p-6 dark:border-slate-700 dark:bg-slate-900">
+      <div class="grid grid-cols-1 gap-5 sm:grid-cols-2">
+        @for (linha of [1, 2, 3, 4, 5, 6]; track linha) {
+          <div class="flex flex-col gap-2">
+            <span class="h-3 w-28 animate-pulse rounded bg-slate-200 dark:bg-slate-700"></span>
+            <span class="h-5 w-full animate-pulse rounded bg-slate-200 dark:bg-slate-700"></span>
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+} @else {
+  @if (usuario(); as u) {
+    <div class="flex flex-col gap-6">
+      <!-- Trilha de volta + título: mesmo padrão do formulário. -->
+      <div class="flex flex-col gap-2">
+        <a
+          routerLink="/usuarios"
+          class="inline-flex w-fit items-center gap-1 text-sm text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200"
+        >
+          <svg class="size-4" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+            <path fill-rule="evenodd" d="M12.79 5.23a.75.75 0 0 1 .02 1.06L8.832 10l3.978 3.71a.75.75 0 1 1-1.04 1.08l-4.5-4.25a.75.75 0 0 1 0-1.08l4.5-4.25a.75.75 0 0 1 1.06.02Z" clip-rule="evenodd" />
+          </svg>
+          Usuários
+        </a>
+
+        <h1 class="text-2xl font-semibold tracking-tight text-slate-900 dark:text-slate-100">
+          {{ u.nomeCompleto }}
+        </h1>
+      </div>
+
+      @if (erroSituacao()) {
+        <div
+          class="rounded-md border border-perigo-600 bg-perigo-100 px-4 py-3 text-sm text-perigo-900 dark:border-perigo-500 dark:bg-perigo-900 dark:text-perigo-100"
+          role="alert"
+        >
+          Não foi possível alterar a situação de {{ u.nomeCompleto }}. A situação exibida não foi alterada.
+        </div>
+      }
+
+      <div class="rounded-lg border border-slate-200 bg-white dark:border-slate-700 dark:bg-slate-900">
+        <!-- Mesma grid de 2 colunas do formulário — os dados leem como campos. -->
+        <dl class="grid grid-cols-1 gap-5 p-6 sm:grid-cols-2">
+          <div class="flex flex-col gap-1">
+            <dt class="text-sm font-medium text-slate-700 dark:text-slate-200">Nome completo</dt>
+            <dd class="text-slate-900 dark:text-slate-100">{{ u.nomeCompleto }}</dd>
+          </div>
+
+          <div class="flex flex-col gap-1">
+            <dt class="text-sm font-medium text-slate-700 dark:text-slate-200">E-mail</dt>
+            <dd class="text-slate-900 dark:text-slate-100">{{ u.email }}</dd>
+          </div>
+
+          <div class="flex flex-col gap-1">
+            <dt class="text-sm font-medium text-slate-700 dark:text-slate-200">Apelido</dt>
+            <dd class="text-slate-900 dark:text-slate-100">
+              {{ u.apelido === '' ? 'Sem apelido' : u.apelido }}
+            </dd>
+          </div>
+
+          <div class="flex flex-col gap-1">
+            <dt class="text-sm font-medium text-slate-700 dark:text-slate-200">Nome de exibição</dt>
+            <dd class="text-slate-900 dark:text-slate-100">{{ nomeExibicao(u) }}</dd>
+          </div>
+
+          <div class="flex flex-col gap-1">
+            <dt class="text-sm font-medium text-slate-700 dark:text-slate-200">Situação</dt>
+            <dd class="text-slate-900 dark:text-slate-100">{{ situacaoPorExtenso(u) }}</dd>
+          </div>
+
+          <div class="flex flex-col gap-1">
+            <dt class="text-sm font-medium text-slate-700 dark:text-slate-200">Data de cadastro</dt>
+            <dd class="text-slate-900 dark:text-slate-100">{{ dataCadastroFormatada(u) }}</dd>
+          </div>
+        </dl>
+
+        <!-- Rodapé de ações destacado — mesma anatomia do formulário. -->
+        <div class="flex flex-wrap justify-end gap-3 rounded-b-lg border-t border-slate-200 bg-slate-50 px-6 py-4 dark:border-slate-700 dark:bg-slate-800">
+          <button
+            type="button"
+            (click)="alterarSituacao()"
+            [class]="
+              u.situacao === 'ativo'
+                ? 'controle cursor-pointer rounded-md border border-perigo-600 bg-white px-4 py-1.5 text-sm font-medium text-perigo-600 hover:bg-perigo-100 dark:border-perigo-500 dark:bg-slate-900 dark:text-perigo-500 dark:hover:bg-perigo-900'
+                : 'controle cursor-pointer rounded-md border border-marca-700 bg-white px-4 py-1.5 text-sm font-medium text-marca-700 hover:bg-marca-100 dark:border-marca-300 dark:bg-slate-900 dark:text-marca-300 dark:hover:bg-slate-700'
+            "
+          >
+            {{ rotuloAcaoSituacao(u) }}
+          </button>
+
+          <a
+            [routerLink]="['/usuarios/editar', id()]"
+            class="controle inline-flex cursor-pointer items-center rounded-md border border-atencao-400 bg-white px-4 py-1.5 text-sm font-medium text-atencao-700 hover:bg-atencao-100 dark:border-atencao-400 dark:bg-slate-900 dark:text-atencao-400 dark:hover:bg-atencao-900"
+          >
+            Editar
+          </a>
+        </div>
+      </div>
+    </div>
+  }
+}

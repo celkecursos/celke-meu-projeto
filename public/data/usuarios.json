@@ -1,0 +1,114 @@
+[
+  {
+    "id": "1",
+    "nomeCompleto": "João da Silva",
+    "email": "joao.silva@exemplo.com",
+    "apelido": "Jotinha",
+    "situacao": "ativo",
+    "dataCadastro": "2025-01-10T09:15:00.000Z"
+  },
+  {
+    "id": "2",
+    "nomeCompleto": "Maria Oliveira Santos",
+    "email": "maria.santos@exemplo.com",
+    "apelido": "",
+    "situacao": "ativo",
+    "dataCadastro": "2025-02-14T11:30:00.000Z"
+  },
+  {
+    "id": "3",
+    "nomeCompleto": "Pedro Henrique Costa",
+    "email": "pedro.costa@exemplo.com",
+    "apelido": "Pedrinho",
+    "situacao": "inativo",
+    "dataCadastro": "2025-03-05T08:00:00.000Z"
+  },
+  {
+    "id": "4",
+    "nomeCompleto": "Madonna",
+    "email": "madonna@exemplo.com",
+    "apelido": "",
+    "situacao": "ativo",
+    "dataCadastro": "2025-04-20T14:45:00.000Z"
+  },
+  {
+    "id": "5",
+    "nomeCompleto": "Ana    Paula   Ribeiro",
+    "email": "ana.ribeiro@exemplo.com",
+    "apelido": "Aninha",
+    "situacao": "inativo",
+    "dataCadastro": "2025-05-01T10:00:00.000Z"
+  },
+  {
+    "id": "6",
+    "nomeCompleto": "Carlos Eduardo Lima",
+    "email": "carlos.lima@exemplo.com",
+    "apelido": "",
+    "situacao": "ativo",
+    "dataCadastro": "2025-06-18T16:20:00.000Z"
+  },
+  {
+    "id": "7",
+    "nomeCompleto": "Fernanda Souza Alves",
+    "email": "fernanda.alves@exemplo.com",
+    "apelido": "Fê",
+    "situacao": "inativo",
+    "dataCadastro": "2025-07-22T09:50:00.000Z"
+  },
+  {
+    "id": "8",
+    "nomeCompleto": "Rafael Martins Pereira",
+    "email": "rafael.pereira@exemplo.com",
+    "apelido": "",
+    "situacao": "ativo",
+    "dataCadastro": "2025-08-03T13:10:00.000Z"
+  },
+  {
+    "id": "9",
+    "nomeCompleto": "Juliana Ferreira Gomes",
+    "email": "juliana.gomes@exemplo.com",
+    "apelido": "Ju",
+    "situacao": "ativo",
+    "dataCadastro": "2025-09-11T07:40:00.000Z"
+  },
+  {
+    "id": "10",
+    "nomeCompleto": "Bruno Cardoso Teixeira",
+    "email": "bruno.teixeira@exemplo.com",
+    "apelido": "",
+    "situacao": "inativo",
+    "dataCadastro": "2025-10-09T18:05:00.000Z"
+  },
+  {
+    "id": "11",
+    "nomeCompleto": "Camila Rocha Barbosa",
+    "email": "camila.barbosa@exemplo.com",
+    "apelido": "Miloca",
+    "situacao": "ativo",
+    "dataCadastro": "2025-11-27T12:25:00.000Z"
+  },
+  {
+    "id": "12",
+    "nomeCompleto": "Thiago Nascimento Dias",
+    "email": "thiago.dias@exemplo.com",
+    "apelido": "",
+    "situacao": "inativo",
+    "dataCadastro": "2025-12-15T15:55:00.000Z"
+  },
+  {
+    "id": "13",
+    "nomeCompleto": "Larissa Mendes Cavalcanti",
+    "email": "larissa.cavalcanti@exemplo.com",
+    "apelido": "Lari",
+    "situacao": "ativo",
+    "dataCadastro": "2026-01-06T10:10:00.000Z"
+  },
+  {
+    "id": "14",
+    "nomeCompleto": "Gustavo Ramos Farias",
+    "email": "gustavo.farias@exemplo.com",
+    "apelido": "",
+    "situacao": "ativo",
+    "dataCadastro": "2026-02-02T09:30:00.000Z"
+  }
+]

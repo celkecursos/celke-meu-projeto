@@ -1,0 +1,18 @@
+# Fallback de SPA para hospedagem ESTÁTICA (sem processo Node por trás).
+#
+# Equivalente ao `app.get(['/', '/*rota'], ...)` do server.js — mas o server.js
+# só entra em ação quando `npm run serve:prod` está rodando. Quando o deploy serve
+# `dist/<projeto>/browser/` como arquivos estáticos puros (ex.: build feito
+# localmente e a hospedagem só publica, sem rodar Node), é ESTE arquivo que evita
+# 404 ao acessar uma rota do Angular diretamente ou dar refresh nela
+# (ex.: /usuarios, /usuarios/visualizar/1).
+#
+# Fica em `public/` (não em `dist/`) porque `public/**/*` é copiado para o bundle
+# a cada `npm run build` — editar `dist/` direto seria apagado no próximo build.
+RewriteEngine On
+
+# Não reescreve pedidos de arquivo ou diretório que existem de verdade
+# (JS/CSS com hash, favicon, dados do mock em /data) — só rotas do Angular.
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^ index.html [L]

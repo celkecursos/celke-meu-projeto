@@ -1,0 +1,32 @@
+<div class="flex flex-col gap-1">
+  <label [for]="id" class="text-sm font-medium text-slate-700 dark:text-slate-200">
+    {{ rotulo() }}
+    @if (obrigatorio()) {
+      <span class="text-perigo-600 dark:text-perigo-500" aria-hidden="true">*</span>
+    }
+  </label>
+
+  <input
+    [id]="id"
+    [type]="tipo()"
+    [value]="valor()"
+    [disabled]="desabilitado()"
+    [attr.aria-invalid]="invalido"
+    [attr.aria-describedby]="invalido ? id + '-erro' : dica() ? id + '-dica' : null"
+    [attr.aria-required]="obrigatorio() ? 'true' : null"
+    class="controle w-full rounded-md border bg-white px-3 py-1.5 text-slate-900 placeholder:text-slate-400 disabled:cursor-not-allowed disabled:bg-slate-100 dark:bg-slate-900 dark:text-slate-100 dark:disabled:bg-slate-800"
+    [class.border-slate-300]="!invalido"
+    [class.dark:border-slate-600]="!invalido"
+    [class.border-perigo-600]="invalido"
+    (input)="digitou($event)"
+    (blur)="saiu()"
+  />
+
+  @if (invalido) {
+    <p [id]="id + '-erro'" class="text-sm text-perigo-600 dark:text-perigo-500" role="alert">
+      {{ mensagemErro }}
+    </p>
+  } @else if (dica()) {
+    <p [id]="id + '-dica'" class="text-sm text-slate-500 dark:text-slate-400">{{ dica() }}</p>
+  }
+</div>

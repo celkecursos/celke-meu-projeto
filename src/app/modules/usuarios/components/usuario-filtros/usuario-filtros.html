@@ -1,0 +1,59 @@
+<div class="flex flex-col gap-3 sm:flex-row sm:items-end sm:gap-4">
+  <div class="flex flex-1 flex-col gap-1">
+    <label for="usuario-filtros-busca" class="text-sm font-medium text-slate-700 dark:text-slate-200">
+      Buscar por nome ou e-mail
+    </label>
+    <input
+      id="usuario-filtros-busca"
+      type="search"
+      [value]="buscaValor()"
+      (input)="digitouBusca($event)"
+      class="controle w-full rounded-md border border-slate-300 bg-white px-3 py-1.5 text-slate-900 placeholder:text-slate-400 dark:border-slate-600 dark:bg-slate-900 dark:text-slate-100"
+    />
+  </div>
+
+  <div class="flex flex-col gap-1">
+    <label for="usuario-filtros-situacao" class="text-sm font-medium text-slate-700 dark:text-slate-200">
+      Situação
+    </label>
+    <!--
+      A seta NATIVA do <select> é desenhada pelo navegador colada na borda e ignora
+      o padding do elemento — por isso `appearance-none` mais uma seta própria,
+      posicionada com folga igual à do botão de limpar do campo de busca.
+    -->
+    <div class="relative">
+      <select
+        id="usuario-filtros-situacao"
+        [value]="situacaoValor()"
+        (change)="trocouSituacao($event)"
+        class="controle w-full cursor-pointer appearance-none rounded-md border border-slate-300 bg-white py-1.5 pl-3 pr-10 text-slate-900 dark:border-slate-600 dark:bg-slate-900 dark:text-slate-100"
+      >
+        <option value="">Todos</option>
+        <option value="ativo">Ativos</option>
+        <option value="inativo">Inativos</option>
+      </select>
+
+      <svg
+        class="pointer-events-none absolute right-3 top-1/2 size-4 -translate-y-1/2 text-slate-500 dark:text-slate-400"
+        viewBox="0 0 20 20"
+        fill="currentColor"
+        aria-hidden="true"
+      >
+        <path
+          fill-rule="evenodd"
+          d="M5.23 7.21a.75.75 0 0 1 1.06.02L10 11.17l3.71-3.94a.75.75 0 1 1 1.08 1.04l-4.25 4.5a.75.75 0 0 1-1.08 0l-4.25-4.5a.75.75 0 0 1 .02-1.06Z"
+          clip-rule="evenodd"
+        />
+      </svg>
+    </div>
+  </div>
+
+  <button
+    type="button"
+    [disabled]="semFiltroAtivo()"
+    (click)="limpar.emit()"
+    class="controle cursor-pointer rounded-md border border-slate-300 px-4 py-1.5 text-sm font-medium text-slate-700 hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-50 dark:border-slate-600 dark:text-slate-200 dark:hover:bg-slate-800"
+  >
+    Limpar filtros
+  </button>
+</div>

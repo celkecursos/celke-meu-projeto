@@ -1,0 +1,82 @@
+<div class="min-h-screen bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-100">
+  <header class="border-b border-slate-200 bg-white dark:border-slate-700 dark:bg-slate-900">
+    <div class="mx-auto flex max-w-7xl items-center gap-3 px-4 py-3 md:px-6">
+      <button
+        type="button"
+        class="cursor-pointer controle rounded-md px-3 py-1.5 text-slate-700 hover:bg-slate-100 md:hidden dark:text-slate-200 dark:hover:bg-slate-800"
+        [attr.aria-expanded]="menuAberto()"
+        aria-controls="nav-principal"
+        (click)="alternarMenu()"
+      >
+        <span class="sr-only">Alternar menu</span>
+        <span aria-hidden="true">☰</span>
+      </button>
+
+      <a routerLink="/" class="font-semibold text-marca-700 dark:text-marca-300">Meu Projeto</a>
+
+      <nav
+        id="nav-principal"
+        class="hidden md:flex md:items-center md:gap-1"
+        aria-label="Navegação principal"
+      >
+        @if (itens().length > 0) {
+          <ul class="flex items-center gap-1">
+            @for (item of itens(); track item.rota) {
+              <li>
+                <a
+                  [routerLink]="item.rota"
+                  routerLinkActive="bg-marca-50 text-marca-700 dark:bg-slate-800 dark:text-marca-300"
+                  class="flex controle items-center rounded-md px-3 py-1.5 text-slate-700 hover:bg-slate-100 dark:text-slate-200 dark:hover:bg-slate-800"
+                >
+                  {{ item.rotulo }}
+                </a>
+              </li>
+            }
+          </ul>
+        }
+      </nav>
+
+      <button
+        type="button"
+        class="cursor-pointer ml-auto controle rounded-md px-3 py-1.5 text-slate-700 hover:bg-slate-100 dark:text-slate-200 dark:hover:bg-slate-800"
+        (click)="alternarTema()"
+      >
+        <span class="sr-only">Alternar tema claro e escuro</span>
+        <span aria-hidden="true">{{ escuro() ? '☀' : '☾' }}</span>
+      </button>
+    </div>
+
+    <!-- Mobile: a mesma navegação, empilhada sob a barra quando o menu está aberto. -->
+    <nav
+      class="mx-auto max-w-7xl border-t border-slate-200 px-4 py-2 md:hidden dark:border-slate-700"
+      [class.hidden]="!menuAberto()"
+      aria-label="Navegação principal (mobile)"
+    >
+      @if (itens().length === 0) {
+        <p class="text-sm text-slate-500 dark:text-slate-400">
+          Nenhum módulo registrado ainda. O primeiro nasce do pipeline SDD
+          (<code>/sdd</code>), e a task de fiação registra o item aqui.
+        </p>
+      } @else {
+        <ul class="flex flex-col gap-1">
+          @for (item of itens(); track item.rota) {
+            <li>
+              <a
+                [routerLink]="item.rota"
+                routerLinkActive="bg-marca-50 text-marca-700 dark:bg-slate-800 dark:text-marca-300"
+                class="flex controle items-center rounded-md px-3 py-1.5 text-slate-700 hover:bg-slate-100 dark:text-slate-200 dark:hover:bg-slate-800"
+                (click)="fecharMenu()"
+              >
+                {{ item.rotulo }}
+              </a>
+            </li>
+          }
+        </ul>
+      }
+    </nav>
+  </header>
+
+  <main class="mx-auto min-w-0 max-w-7xl px-4 py-4 md:px-6 md:py-6">
+    <router-outlet />
+  </main>
+</div>
