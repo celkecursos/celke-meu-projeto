@@ -17,10 +17,10 @@
       <button
         type="button"
         class="controle cursor-pointer rounded-md border border-atencao-400 bg-white px-3 py-1.5 text-sm font-medium text-atencao-700 hover:bg-atencao-100 dark:border-atencao-400 dark:bg-slate-800 dark:text-atencao-400 dark:hover:bg-atencao-900"
-        [attr.aria-label]="'Editar ' + usuario.nomeCompleto"
+        [attr.aria-label]="'Alterar ' + usuario.nomeCompleto"
         (click)="editar.emit(usuario)"
       >
-        Editar
+        Alterar
       </button>
 
       @if (usuario.situacao === 'ativo') {
